@@ -14,7 +14,6 @@ import java.util.UUID;
 @Component
 public class AccountServiceImpl implements AccountService {
 
-    //whenever dependency injection, it's best to go with private final
     private final AccountRepository accountRepository;
 
     public AccountServiceImpl(AccountRepository accountRepository) {
@@ -22,16 +21,12 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userID) {
-
+    public Account createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
         //1 - we need to create account object
         //this is lombok build method, we could use setter or new keyword
         Account account = Account.builder().id(UUID.randomUUID())
-                .userId(userID)
-                .balance(balance)
-                .accountType(accountType)
-                .creationDate(creationDate)
-                .build();
+                .userId(userId).balance(balance)
+                .accountType(accountType).creationDate(creationDate).build();
 
         //2 - save into the db (repository)
         return accountRepository.save(account);
@@ -39,7 +34,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> listAllAccounts() {
+    public List<Account> listAllAccount() {
         return accountRepository.findAll();
     }
 }

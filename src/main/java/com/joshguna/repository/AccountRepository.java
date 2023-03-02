@@ -5,14 +5,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class AccountRepository {
 
-    //Group of accounts
     public static List<Account> accountList = new ArrayList<>();
 
-    //Adding new account to the group
     public Account save(Account account) {
         accountList.add(account);
         return account;
@@ -20,5 +19,12 @@ public class AccountRepository {
 
     public List<Account> findAll() {
         return accountList;
+    }
+
+    public Account findById(UUID id) {
+        //TASK
+        //write a method, that find the account inside the list, if not
+        //throws RecordNotFoundException
+        return null;
     }
 }

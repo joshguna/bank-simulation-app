@@ -2,6 +2,6 @@ package com.joshguna.enums;
 
 public enum AccountType {
 
-    CHECKING, SAVING;
+    CHECKING, SAVING
 
 }
