@@ -7,6 +7,7 @@ import com.joshguna.exception.BalanceNotSufficientException;
 import com.joshguna.model.Account;
 import com.joshguna.model.Transaction;
 import com.joshguna.repository.AccountRepository;
+import com.joshguna.repository.TransactionRepository;
 import com.joshguna.service.TransactionService;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +20,11 @@ import java.util.UUID;
 public class TransactionServiceImpl implements TransactionService {
 
     private final AccountRepository accountRepository;
+    private final TransactionRepository transactionRepository;
 
-    public TransactionServiceImpl(AccountRepository accountRepository) {
+    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
         this.accountRepository = accountRepository;
+        this.transactionRepository = transactionRepository;
     }
 
     @Override
@@ -36,7 +39,11 @@ public class TransactionServiceImpl implements TransactionService {
         checkAccountOwnership(sender, receiver);
         executeBalanceAndUpdateIfRequired(amount, sender, receiver);
 
-        return null;
+        //after all validation and money transfer, we create Transaction obj and save/return it
+        Transaction transaction = Transaction.builder().amount(amount).sender(sender.getId())
+                .receiver(receiver.getId()).creationDate(creationDate).message(message).build();
+
+        return transactionRepository.save(transaction);
     }
 
     private void executeBalanceAndUpdateIfRequired(BigDecimal amount, Account sender, Account receiver) {
@@ -95,6 +102,6 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> findAllTransaction() {
-        return null;
+        return transactionRepository.findAll();
     }
 }
