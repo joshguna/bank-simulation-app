@@ -3,6 +3,7 @@ package com.joshguna.service.impl;
 import com.joshguna.enums.AccountType;
 import com.joshguna.exception.AccountOwnershipException;
 import com.joshguna.exception.BadRequestException;
+import com.joshguna.exception.BalanceNotSufficientException;
 import com.joshguna.model.Account;
 import com.joshguna.model.Transaction;
 import com.joshguna.repository.AccountRepository;
@@ -32,8 +33,27 @@ public class TransactionServiceImpl implements TransactionService {
             -if both accounts are checking, if not, one of them saving, it needs to be same userId
          */
         validateAccount(sender, receiver);
+        checkAccountOwnership(sender, receiver);
+        executeBalanceAndUpdateIfRequired(amount, sender, receiver);
 
         return null;
+    }
+
+    private void executeBalanceAndUpdateIfRequired(BigDecimal amount, Account sender, Account receiver) {
+        if (checkSenderBalance(sender, amount)) {
+
+            //update balances
+            sender.setBalance(sender.getBalance().subtract(amount));
+            receiver.setBalance(receiver.getBalance().add(amount));
+        } else {
+            throw new BalanceNotSufficientException("Balance is not enough for this transfer");
+        }
+
+    }
+
+    private boolean checkSenderBalance(Account sender, BigDecimal amount) {
+        //verify sender has enough balance to send
+        return sender.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) >= 0;
     }
 
     private void checkAccountOwnership(Account sender, Account receiver) {
@@ -43,7 +63,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         if ((sender.getAccountType().equals(AccountType.SAVING) ||
                 receiver.getAccountType().equals(AccountType.SAVING)) && !(sender.getUserId().equals(receiver.getUserId()))) {
-            throw new AccountOwnershipException("Accounts cannot be savings, or sender and receiver cannot be same");
+            throw new AccountOwnershipException("Since you are using savings account, users must be same");
         }
     }
 
