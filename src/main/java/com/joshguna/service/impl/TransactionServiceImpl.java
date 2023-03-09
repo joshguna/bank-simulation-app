@@ -1,5 +1,7 @@
 package com.joshguna.service.impl;
 
+import com.joshguna.enums.AccountType;
+import com.joshguna.exception.AccountOwnershipException;
 import com.joshguna.exception.BadRequestException;
 import com.joshguna.model.Account;
 import com.joshguna.model.Transaction;
@@ -34,6 +36,17 @@ public class TransactionServiceImpl implements TransactionService {
         return null;
     }
 
+    private void checkAccountOwnership(Account sender, Account receiver) {
+
+        //if statement that checks if one of the account is saving,
+        //and user of sender or receiver is not the same, throw AccountOwnershipException
+
+        if ((sender.getAccountType().equals(AccountType.SAVING) ||
+                receiver.getAccountType().equals(AccountType.SAVING)) && !(sender.getUserId().equals(receiver.getUserId()))) {
+            throw new AccountOwnershipException("Accounts cannot be savings, or sender and receiver cannot be same");
+        }
+    }
+
     private void validateAccount(Account sender, Account receiver) {
         /*
             -if any of the account is null
@@ -49,6 +62,7 @@ public class TransactionServiceImpl implements TransactionService {
             throw new BadRequestException("Sender account needs to be different than receiver");
         }
 
+        //verify if we have sender and receiver in the database
         findAccountById(sender.getId());
         findAccountById(receiver.getId());
 

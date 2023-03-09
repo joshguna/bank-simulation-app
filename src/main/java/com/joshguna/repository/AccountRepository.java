@@ -1,5 +1,6 @@
 package com.joshguna.repository;
 
+import com.joshguna.exception.RecordNotFoundException;
 import com.joshguna.model.Account;
 import org.springframework.stereotype.Component;
 
@@ -22,9 +23,11 @@ public class AccountRepository {
     }
 
     public Account findById(UUID id) {
-        //TASK
-        //write a method, that find the account inside the list, if not
+        //Method, that finds the account inside the list, if not
         //throws RecordNotFoundException
-        return null;
+
+        return accountList.stream().filter(account -> account.getId().equals(id))
+                .findAny().orElseThrow(() -> new RecordNotFoundException("Account not exist in the database."));
+
     }
 }
