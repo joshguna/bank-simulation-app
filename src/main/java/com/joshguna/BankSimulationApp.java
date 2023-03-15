@@ -19,6 +19,14 @@ public class BankSimulationApp {
     public static void main(String[] args) {
         ApplicationContext container = SpringApplication.run(BankSimulationApp.class, args);
 
+
+
+
+        /*
+        **
+        * Code block below is used for debugging and logging info to console
+        *
+
         //getting account nd transaction service beans
         AccountService accountService = container.getBean(AccountService.class);
         TransactionService transactionService = container.getBean(TransactionService.class);
@@ -35,6 +43,7 @@ public class BankSimulationApp {
         System.out.println(transactionService.findAllTransaction().get(0));
 
         accountService.listAllAccount().forEach(System.out::println);
+         */
 
 
     }
