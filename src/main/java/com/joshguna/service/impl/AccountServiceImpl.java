@@ -1,5 +1,6 @@
 package com.joshguna.service.impl;
 
+import com.joshguna.enums.AccountStatus;
 import com.joshguna.enums.AccountType;
 import com.joshguna.model.Account;
 import com.joshguna.repository.AccountRepository;
@@ -26,7 +27,8 @@ public class AccountServiceImpl implements AccountService {
         //this is lombok build method, we could use setter or new keyword
         Account account = Account.builder().id(UUID.randomUUID())
                 .userId(userId).balance(balance)
-                .accountType(accountType).creationDate(creationDate).build();
+                .accountType(accountType).creationDate(creationDate)
+                .accountStatus(AccountStatus.ACTIVE).build();
 
         //2 - save into the db (repository)
         return accountRepository.save(account);
