@@ -3,8 +3,7 @@ package com.joshguna.contoller;
 import com.joshguna.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class AccountController {
 
@@ -14,7 +13,7 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-    @RequestMapping("/index")
+    @GetMapping("/index")
     public String indexPage(Model model) {
 
         //This is also possible
@@ -25,5 +24,17 @@ public class AccountController {
 
         return "account/index";
     }
+
+    @GetMapping("/create-form")
+    public String getCreateForm() {
+
+        //empty account object provided
+        //account type enum needs to fill dropdown
+        return "account/create-account";
+    }
+
+    //create method to capture information from UI,
+    //print them on the console.
+    //trigger createAccount method, create the account based on user input.
 
 }
