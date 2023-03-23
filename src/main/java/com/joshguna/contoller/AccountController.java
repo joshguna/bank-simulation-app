@@ -2,6 +2,7 @@ package com.joshguna.contoller;
 
 import com.joshguna.enums.AccountType;
 import com.joshguna.model.Account;
+import com.joshguna.repository.AccountRepository;
 import com.joshguna.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,17 +10,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.Date;
 
 @Controller
 public class AccountController {
 
     private final AccountService accountService;
+    private final AccountRepository accountRepository;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, AccountRepository accountRepository) {
         this.accountService = accountService;
+        this.accountRepository = accountRepository;
     }
 
     @GetMapping("/index")
@@ -49,11 +50,13 @@ public class AccountController {
     @PostMapping("/add-user")
     public String createAccount(@ModelAttribute("account") Account account, Model model) {
 
-        //create method to capture information from UI,
+        //Model attribute captures information from UI
         //print them on the console.
-        //trigger createAccount method, create the account based on user input.
-
         System.out.println(account.toString());
+
+        //Save UI data into DB
+        accountService.createNewAccount(account.getBalance(), new Date(), account.getAccountType(), account.getUserId());
+
 //        return "account/index";
         return "redirect:/index";
 

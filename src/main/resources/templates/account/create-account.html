@@ -33,6 +33,7 @@
                     <div class="form-group blu-margin">
                         <label for="dropOperator" class="col-form-label">Account Type</label>
                         <select th:field="*{accountType}" class="form-control" id="dropOperator">
+                            <option value="0">Select Account</option>
                             <option th:each="accountType : ${accountTypeList}" th:value="${accountType}"
                                     th:text="${accountType}">Select Account
                             </option>
