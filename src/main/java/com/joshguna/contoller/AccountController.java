@@ -6,11 +6,10 @@ import com.joshguna.repository.AccountRepository;
 import com.joshguna.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Controller
 public class AccountController {
@@ -48,7 +47,7 @@ public class AccountController {
     }
 
     @PostMapping("/add-user")
-    public String createAccount(@ModelAttribute("account") Account account, Model model) {
+    public String createAccount(@ModelAttribute("account") Account account) {
 
         //Model attribute captures information from UI
         //print them on the console.
@@ -58,6 +57,18 @@ public class AccountController {
         accountService.createNewAccount(account.getBalance(), new Date(), account.getAccountType(), account.getUserId());
 
 //        return "account/index";
+        return "redirect:/index";
+
+
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteAccount(@PathVariable("id") UUID id) {
+
+
+        accountService.deleteAccount(id);
+        System.out.println(id);
+
         return "redirect:/index";
 
 
