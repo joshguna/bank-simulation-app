@@ -74,4 +74,11 @@ public class AccountController {
 
     }
 
+    @GetMapping("/activate/{id}")
+    public String activateAccount(@PathVariable("id") UUID id) {
+
+        accountService.activateAccount(id);
+
+        return "redirect:/index";
+    }
 }

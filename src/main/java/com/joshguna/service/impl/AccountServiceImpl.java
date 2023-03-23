@@ -47,4 +47,12 @@ public class AccountServiceImpl implements AccountService {
                 .findFirst().get()
                 .setAccountStatus(AccountStatus.DELETED);
     }
+
+    @Override
+    public void activateAccount(UUID id) {
+        accountRepository.findAll().stream()
+                .filter(account -> account.getId().equals(id))
+                .findFirst().get()
+                .setAccountStatus(AccountStatus.ACTIVE);
+    }
 }

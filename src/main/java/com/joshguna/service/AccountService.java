@@ -15,4 +15,6 @@ public interface AccountService {
     List<Account> listAllAccount();
 
     public void deleteAccount(UUID id);
+
+    void activateAccount(UUID id);
 }
