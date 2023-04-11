@@ -2,7 +2,6 @@ package com.joshguna.contoller;
 
 import com.joshguna.enums.AccountType;
 import com.joshguna.model.Account;
-import com.joshguna.repository.AccountRepository;
 import com.joshguna.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,11 +14,9 @@ import java.util.UUID;
 public class AccountController {
 
     private final AccountService accountService;
-    private final AccountRepository accountRepository;
 
-    public AccountController(AccountService accountService, AccountRepository accountRepository) {
+    public AccountController(AccountService accountService) {
         this.accountService = accountService;
-        this.accountRepository = accountRepository;
     }
 
     @GetMapping("/index")
@@ -38,7 +35,7 @@ public class AccountController {
     public String getCreateForm(Model model) {
 
         //empty account object provided
-        model.addAttribute("account", new Account());
+        model.addAttribute("account", Account.builder().build());
 
         //account type enum needs to fill dropdown
         model.addAttribute("accountTypeList", AccountType.values());
