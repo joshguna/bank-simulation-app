@@ -45,7 +45,7 @@
                         <label for="dropOperator" class="col-form-label">Account Type</label>
                         <select class="form-control" id="dropOperator" th:field="*{accountType}">
                             <option th:text="select" th:value="''"></option>
-                            <option th:each="type : ${accountTypes}" th:value="${type.name()}"
+                            <option th:each="type : ${accountTypeList}" th:value="${type.name()}"
                                     th:text="${type.name()}"></option>
                         </select>
                         <span th:if="${#fields.hasErrors('accountType')}">

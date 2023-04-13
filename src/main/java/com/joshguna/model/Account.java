@@ -16,17 +16,14 @@ import java.util.UUID;
 public class Account {
 
     private UUID id;
-    private AccountStatus accountStatus;
-    private Date creationDate;
-
     @NotNull
     @Positive
     private BigDecimal balance;
-
     @NotNull
     private AccountType accountType;
-
+    private Date creationDate;
     @NotNull
     private Long userId;
+    private AccountStatus accountStatus;
 
 }

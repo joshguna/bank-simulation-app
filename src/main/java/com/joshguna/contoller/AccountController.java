@@ -45,11 +45,13 @@ public class AccountController {
         return "account/create-account";
     }
 
-    @PostMapping("/add-user")
+    @PostMapping("/create")
     public String createAccount(@Valid @ModelAttribute("account") Account account, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("accountTypes", AccountType.values());
+
+            model.addAttribute("accountTypeList", AccountType.values());
+            return "account/create-account";
         }
 
         //Model attribute captures information from UI
