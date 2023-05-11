@@ -1,8 +1,10 @@
 package com.joshguna.service.impl;
 
 import com.joshguna.dto.AccountDTO;
+import com.joshguna.entity.Account;
 import com.joshguna.enums.AccountStatus;
 import com.joshguna.enums.AccountType;
+import com.joshguna.mapper.AccountMapper;
 import com.joshguna.repository.AccountRepository;
 import com.joshguna.service.AccountService;
 import org.springframework.stereotype.Component;
@@ -10,15 +12,17 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Component
 public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
 
-    public AccountServiceImpl(AccountRepository accountRepository) {
+    public AccountServiceImpl(AccountRepository accountRepository, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
+        this.accountMapper = accountMapper;
     }
 
     @Override
@@ -34,7 +38,16 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AccountDTO> listAllAccount() {
-        return accountRepository.findAll();
+
+        /*
+            we are getting list of account from repo(database
+            but we need to return list of AccountDTO to controller
+            what we need to do is we will convert Accounts to AccountsDTO
+         */
+
+        List<Account> accountList = accountRepository.findAll();
+        //we are converting list of account to accountDTOs and returning it.
+        return accountList.stream().map(accountMapper::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
