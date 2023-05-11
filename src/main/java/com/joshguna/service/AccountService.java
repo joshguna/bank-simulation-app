@@ -1,7 +1,7 @@
 package com.joshguna.service;
 
+import com.joshguna.dto.AccountDTO;
 import com.joshguna.enums.AccountType;
-import com.joshguna.model.Account;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -10,13 +10,13 @@ import java.util.UUID;
 
 public interface AccountService {
 
-    Account createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId);
+    AccountDTO createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId);
 
-    List<Account> listAllAccount();
+    List<AccountDTO> listAllAccount();
 
     public void deleteAccount(UUID id);
 
     void activateAccount(UUID id);
 
-    Account retrieveByID(UUID id);
+    AccountDTO retrieveByID(UUID id);
 }

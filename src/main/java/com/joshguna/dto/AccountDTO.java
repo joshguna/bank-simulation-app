@@ -1,21 +1,21 @@
-package com.joshguna.model;
+package com.joshguna.dto;
 
 import com.joshguna.enums.AccountStatus;
 import com.joshguna.enums.AccountType;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
-@Data
-@Builder
-public class Account {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class AccountDTO {
 
-    private UUID id;
+    private Long id;
     @NotNull
     @Positive
     private BigDecimal balance;

@@ -1,12 +1,12 @@
 package com.joshguna.service.impl;
 
+import com.joshguna.dto.AccountDTO;
 import com.joshguna.enums.AccountType;
 import com.joshguna.exception.AccountOwnershipException;
 import com.joshguna.exception.BadRequestException;
 import com.joshguna.exception.BalanceNotSufficientException;
 import com.joshguna.exception.UnderConstructionException;
-import com.joshguna.model.Account;
-import com.joshguna.model.Transaction;
+import com.joshguna.dto.TransactionDTO;
 import com.joshguna.repository.AccountRepository;
 import com.joshguna.repository.TransactionRepository;
 import com.joshguna.service.TransactionService;
@@ -33,7 +33,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public Transaction makeTransfer(Account sender, Account receiver, BigDecimal amount, Date creationDate, String message) {
+    public TransactionDTO makeTransfer(AccountDTO sender, AccountDTO receiver, BigDecimal amount, Date creationDate, String message) {
         /*
             -if sender or receiver is null ?
             -if sender and receiver is the same account ?
@@ -46,18 +46,18 @@ public class TransactionServiceImpl implements TransactionService {
             checkAccountOwnership(sender, receiver);
             executeBalanceAndUpdateIfRequired(amount, sender, receiver);
 
-            //after all validation and money transfer, we create Transaction obj and save/return it
-            Transaction transaction = Transaction.builder().amount(amount).sender(sender.getId())
+            //after all validation and money transfer, we create TransactionDTO obj and save/return it
+            TransactionDTO transactionDTO = TransactionDTO.builder().amount(amount).sender(sender.getId())
                     .receiver(receiver.getId()).creationDate(creationDate).message(message).build();
 
-            return transactionRepository.save(transaction);
+            return transactionRepository.save(transactionDTO);
         } else {
             throw new UnderConstructionException("App is under construction, try later");
         }
 
     }
 
-    private void executeBalanceAndUpdateIfRequired(BigDecimal amount, Account sender, Account receiver) {
+    private void executeBalanceAndUpdateIfRequired(BigDecimal amount, AccountDTO sender, AccountDTO receiver) {
         if (checkSenderBalance(sender, amount)) {
 
             //update balances
@@ -69,12 +69,12 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
-    private boolean checkSenderBalance(Account sender, BigDecimal amount) {
+    private boolean checkSenderBalance(AccountDTO sender, BigDecimal amount) {
         //verify sender has enough balance to send
         return sender.getBalance().subtract(amount).compareTo(BigDecimal.ZERO) >= 0;
     }
 
-    private void checkAccountOwnership(Account sender, Account receiver) {
+    private void checkAccountOwnership(AccountDTO sender, AccountDTO receiver) {
 
         //if statement that checks if one of the account is saving,
         //and user of sender or receiver is not the same, throw AccountOwnershipException
@@ -85,7 +85,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
-    private void validateAccount(Account sender, Account receiver) {
+    private void validateAccount(AccountDTO sender, AccountDTO receiver) {
         /*
             -if any of the account is null
             -if account ids are the same(same account)
@@ -112,17 +112,17 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> findAllTransaction() {
+    public List<TransactionDTO> findAllTransaction() {
         return transactionRepository.findAll();
     }
 
     @Override
-    public List<Transaction> last10Transactions() {
+    public List<TransactionDTO> last10Transactions() {
         return transactionRepository.findLast10Transactions();
     }
 
     @Override
-    public List<Transaction> findTransactionListById(UUID id) {
+    public List<TransactionDTO> findTransactionListById(UUID id) {
         return transactionRepository.findTransactionListById(id);
     }
 }

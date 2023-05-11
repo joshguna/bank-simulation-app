@@ -1,8 +1,8 @@
 package com.joshguna.service.impl;
 
+import com.joshguna.dto.AccountDTO;
 import com.joshguna.enums.AccountStatus;
 import com.joshguna.enums.AccountType;
-import com.joshguna.model.Account;
 import com.joshguna.repository.AccountRepository;
 import com.joshguna.service.AccountService;
 import org.springframework.stereotype.Component;
@@ -22,21 +22,21 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
-        //1 - we need to create account object
+    public AccountDTO createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
+        //1 - we need to create accountDTO object
         //this is lombok build method, we could use setter or new keyword
-        Account account = Account.builder().id(UUID.randomUUID())
+        AccountDTO accountDTO = AccountDTO.builder().id(UUID.randomUUID())
                 .userId(userId).balance(balance)
                 .accountType(accountType).creationDate(creationDate)
                 .accountStatus(AccountStatus.ACTIVE).build();
 
         //2 - save into the db (repository)
-        return accountRepository.save(account);
+        return accountRepository.save(accountDTO);
 
     }
 
     @Override
-    public List<Account> listAllAccount() {
+    public List<AccountDTO> listAllAccount() {
         return accountRepository.findAll();
     }
 
@@ -57,7 +57,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account retrieveByID(UUID id) {
+    public AccountDTO retrieveByID(UUID id) {
         return accountRepository.findById(id);
     }
 }

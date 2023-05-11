@@ -1,7 +1,7 @@
 package com.joshguna.contoller;
 
-import com.joshguna.model.Account;
-import com.joshguna.model.Transaction;
+import com.joshguna.dto.AccountDTO;
+import com.joshguna.dto.TransactionDTO;
 import com.joshguna.service.AccountService;
 import com.joshguna.service.TransactionService;
 import org.springframework.stereotype.Controller;
@@ -32,7 +32,7 @@ public class TransactionController {
 
         //what we need to provide to make transfer happen
         //we need to provide empty transaction object
-        model.addAttribute("transaction", Transaction.builder().build());
+        model.addAttribute("transaction", TransactionDTO.builder().build());
 
         //we need all accounts to provide them as sender, receiver
         model.addAttribute("accounts", accountService.listAllAccount());
@@ -44,7 +44,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
-    public String postMakeTransfer(@Valid @ModelAttribute("transaction") Transaction transaction, BindingResult bindingResult, Model model) {
+    public String postMakeTransfer(@Valid @ModelAttribute("transaction") TransactionDTO transactionDTO, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
@@ -52,14 +52,14 @@ public class TransactionController {
             return "transaction/make-transfer";
         }
 
-        //make transfer method of transaction requires Account obj
+        //make transfer method of transactionDTO requires AccountDTO obj
         //we can find UUID using account service
         //method needed to retrieve account based on ID
 
-        Account sender = accountService.retrieveByID(transaction.getSender());
-        Account receiver = accountService.retrieveByID(transaction.getReceiver());
+        AccountDTO sender = accountService.retrieveByID(transactionDTO.getSender());
+        AccountDTO receiver = accountService.retrieveByID(transactionDTO.getReceiver());
 
-        transactionService.makeTransfer(sender, receiver, transaction.getAmount(), new Date(), transaction.getMessage());
+        transactionService.makeTransfer(sender, receiver, transactionDTO.getAmount(), new Date(), transactionDTO.getMessage());
 
         return "redirect:/make-transfer";
     }

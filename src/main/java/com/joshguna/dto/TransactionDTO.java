@@ -1,22 +1,22 @@
-package com.joshguna.model;
+package com.joshguna.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
 
-@Data
-@Builder
-public class Transaction {
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class TransactionDTO {
 
-    @NotNull
-    private UUID sender;
+//    @NotNull
+    private AccountDTO sender;
 
-    @NotNull
-    private UUID receiver;
+//    @NotNull
+    private AccountDTO receiver;
 
     @NotNull
     @Positive

@@ -1,7 +1,7 @@
 package com.joshguna.contoller;
 
+import com.joshguna.dto.AccountDTO;
 import com.joshguna.enums.AccountType;
-import com.joshguna.model.Account;
 import com.joshguna.service.AccountService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,7 @@ public class AccountController {
     public String indexPage(Model model) {
 
         //This is also possible
-        // List<Account> listOfAccount = new ArrayList<>();
+        // List<AccountDTO> listOfAccount = new ArrayList<>();
         // listOfAccount.addAll(accountService.listAllAccount());
 
         model.addAttribute("accountList", accountService.listAllAccount());
@@ -37,7 +37,7 @@ public class AccountController {
     public String getCreateForm(Model model) {
 
         //empty account object provided
-        model.addAttribute("account", Account.builder().build());
+        model.addAttribute("account", AccountDTO.builder().build());
 
         //account type enum needs to fill dropdown
         model.addAttribute("accountTypeList", AccountType.values());
@@ -46,7 +46,7 @@ public class AccountController {
     }
 
     @PostMapping("/create")
-    public String createAccount(@Valid @ModelAttribute("account") Account account, BindingResult bindingResult, Model model) {
+    public String createAccount(@Valid @ModelAttribute("account") AccountDTO accountDTO, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
 
@@ -56,12 +56,12 @@ public class AccountController {
 
         //Model attribute captures information from UI
         //print them on the console.
-        System.out.println(account.toString());
+        System.out.println(accountDTO.toString());
 
         //Save UI data into DB
-        accountService.createNewAccount(account.getBalance(), new Date(), account.getAccountType(), account.getUserId());
+        accountService.createNewAccount(accountDTO.getBalance(), new Date(), accountDTO.getAccountType(), accountDTO.getUserId());
 
-//        return "account/index";
+//        return "accountDTO/index";
         return "redirect:/index";
 
 
