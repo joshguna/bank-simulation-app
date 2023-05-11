@@ -58,7 +58,7 @@ public class AccountController {
         System.out.println(accountDTO.toString());
 
         //Save UI data into DB
-        accountService.createNewAccount(accountDTO.getBalance(), new Date(), accountDTO.getAccountType(), accountDTO.getUserId());
+        accountService.createNewAccount(accountDTO);
 
 //        return "accountDTO/index";
         return "redirect:/index";

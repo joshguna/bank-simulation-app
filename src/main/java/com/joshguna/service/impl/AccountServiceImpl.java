@@ -26,14 +26,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
-        //1 - we need to create accountDTO object
-        //this is lombok build method, we could use setter or new keyword
-        AccountDTO accountDTO = new AccountDTO();
+    public void createNewAccount(AccountDTO accountDTO) {
+        //we will complete the DTO
+        accountDTO.setAccountStatus(AccountStatus.ACTIVE);
+        accountDTO.setCreationDate(new Date());
 
-        //2 - save into the db (repository)
-        return accountRepository.save(accountDTO);
-
+        //convert it to entity and save it.
+        accountRepository.save(accountMapper.convertToEntity(accountDTO));
     }
 
     @Override
