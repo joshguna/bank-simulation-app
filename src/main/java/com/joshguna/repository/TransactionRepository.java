@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Component
@@ -30,7 +29,7 @@ public class TransactionRepository {
                 .limit(10).collect(Collectors.toList());
     }
 
-    public List<TransactionDTO> findTransactionListById(UUID id) {
+    public List<TransactionDTO> findTransactionListById(Long id) {
 
         //this method finds all the money one account received or sent
 

@@ -14,9 +14,9 @@ public interface AccountService {
 
     List<AccountDTO> listAllAccount();
 
-    public void deleteAccount(UUID id);
+    public void deleteAccount(Long id);
 
-    void activateAccount(UUID id);
+    void activateAccount(Long id);
 
-    AccountDTO retrieveByID(UUID id);
+    AccountDTO retrieveByID(Long id);
 }

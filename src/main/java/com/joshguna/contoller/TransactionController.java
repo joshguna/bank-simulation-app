@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.UUID;
 
 @Controller
 public class TransactionController {
@@ -30,9 +29,9 @@ public class TransactionController {
     @GetMapping("/make-transfer")
     public String getMakeTransfer(Model model) {
 
-        //what we need to provide to make transfer happen
+        //what we need to provide to make transfer happen`
         //we need to provide empty transaction object
-        model.addAttribute("transaction", TransactionDTO.builder().build());
+        model.addAttribute("transaction", new TransactionDTO());
 
         //we need all accounts to provide them as sender, receiver
         model.addAttribute("accounts", accountService.listAllAccount());
@@ -56,8 +55,8 @@ public class TransactionController {
         //we can find UUID using account service
         //method needed to retrieve account based on ID
 
-        AccountDTO sender = accountService.retrieveByID(transactionDTO.getSender());
-        AccountDTO receiver = accountService.retrieveByID(transactionDTO.getReceiver());
+        AccountDTO sender = accountService.retrieveByID(transactionDTO.getSender().getId());
+        AccountDTO receiver = accountService.retrieveByID(transactionDTO.getReceiver().getId());
 
         transactionService.makeTransfer(sender, receiver, transactionDTO.getAmount(), new Date(), transactionDTO.getMessage());
 
@@ -65,7 +64,7 @@ public class TransactionController {
     }
 
     @GetMapping("/transaction/{id}")
-    public String getTransactionList(@PathVariable("id") UUID id, Model model) {
+    public String getTransactionList(@PathVariable("id") Long id, Model model) {
 
         System.out.println(id);
 

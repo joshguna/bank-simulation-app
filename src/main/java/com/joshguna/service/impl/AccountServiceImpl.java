@@ -25,10 +25,7 @@ public class AccountServiceImpl implements AccountService {
     public AccountDTO createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
         //1 - we need to create accountDTO object
         //this is lombok build method, we could use setter or new keyword
-        AccountDTO accountDTO = AccountDTO.builder().id(UUID.randomUUID())
-                .userId(userId).balance(balance)
-                .accountType(accountType).creationDate(creationDate)
-                .accountStatus(AccountStatus.ACTIVE).build();
+        AccountDTO accountDTO = new AccountDTO();
 
         //2 - save into the db (repository)
         return accountRepository.save(accountDTO);
@@ -41,7 +38,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void deleteAccount(UUID id) {
+    public void deleteAccount(Long id) {
         accountRepository.findAll().stream()
                 .filter(account -> account.getId().equals(id))
                 .findFirst().get()
@@ -49,7 +46,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void activateAccount(UUID id) {
+    public void activateAccount(Long id) {
         accountRepository.findAll().stream()
                 .filter(account -> account.getId().equals(id))
                 .findFirst().get()
@@ -57,7 +54,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO retrieveByID(UUID id) {
+    public AccountDTO retrieveByID(Long id) {
         return accountRepository.findById(id);
     }
 }
