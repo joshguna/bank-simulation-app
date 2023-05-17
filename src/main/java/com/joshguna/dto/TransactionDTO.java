@@ -12,10 +12,10 @@ import java.util.Date;
 @AllArgsConstructor
 public class TransactionDTO {
 
-//    @NotNull
+    //    @NotNull
     private AccountDTO sender;
 
-//    @NotNull
+    //    @NotNull
     private AccountDTO receiver;
 
     @NotNull
