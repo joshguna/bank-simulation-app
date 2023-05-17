@@ -7,8 +7,9 @@ import com.joshguna.exception.BadRequestException;
 import com.joshguna.exception.BalanceNotSufficientException;
 import com.joshguna.exception.UnderConstructionException;
 import com.joshguna.dto.TransactionDTO;
-import com.joshguna.repository.AccountRepository;
+import com.joshguna.mapper.TransactionMapper;
 import com.joshguna.repository.TransactionRepository;
+import com.joshguna.service.AccountService;
 import com.joshguna.service.TransactionService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TransactionServiceImpl implements TransactionService {
@@ -23,12 +25,14 @@ public class TransactionServiceImpl implements TransactionService {
     @Value("${under_construction}")
     private boolean underConstruction;
 
-    private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
+    private final AccountService accountService;
+    private final TransactionMapper transactionMapper;
 
-    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
-        this.accountRepository = accountRepository;
+    public TransactionServiceImpl(TransactionRepository transactionRepository, AccountService accountService, TransactionMapper transactionMapper) {
+        this.accountService = accountService;
         this.transactionRepository = transactionRepository;
+        this.transactionMapper = transactionMapper;
     }
 
     @Override
@@ -111,7 +115,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionDTO> findAllTransaction() {
-        return transactionRepository.findAll();
+        return transactionRepository.findAll().stream()
+                .map(transactionMapper::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
