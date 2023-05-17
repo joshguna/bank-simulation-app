@@ -19,4 +19,6 @@ public interface AccountService {
     void activateAccount(Long id);
 
     AccountDTO retrieveByID(Long id);
+
+    List<AccountDTO> listAllActiveAccounts();
 }
