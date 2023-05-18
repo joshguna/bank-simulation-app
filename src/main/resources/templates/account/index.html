@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="../css/shards.min.css">
 </head>
 
-<body style="background-color: #e2efde">
-<div class="container my-5 text-dark border border-dark rounded">
+<body>
+<div class="container my-5">
     <div class="row">
         <div class="col-md-6">
             <div th:if="${accountList.size()==0}">
@@ -48,7 +48,7 @@
                             <a th:if="${accountDTO.accountStatus.name()=='DELETED'}" class="btn btn-success"
                                th:href="@{/activate/{id}(id=${accountDTO.id})}">Activate</a>
                         </td>
-                        <td><a class="btn btn-success" th:href="@{/transactionDTO/{id}(id=${accountDTO.id})}">Account
+                        <td><a class="btn btn-success" th:href="@{/transaction/{id}(id=${accountDTO.id})}">Account
                             Transaction</a></td>
                     </tr>
                     </tbody>
