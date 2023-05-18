@@ -55,8 +55,8 @@ public class TransactionController {
         //we can find UUID using account service
         //method needed to retrieve account based on ID
 
-        AccountDTO sender = accountService.retrieveByID(transactionDTO.getSender().getId());
-        AccountDTO receiver = accountService.retrieveByID(transactionDTO.getReceiver().getId());
+        AccountDTO sender = accountService.retrieveById(transactionDTO.getSender().getId());
+        AccountDTO receiver = accountService.retrieveById(transactionDTO.getReceiver().getId());
 
         transactionService.makeTransfer(sender, receiver, transactionDTO.getAmount(), new Date(), transactionDTO.getMessage());
 

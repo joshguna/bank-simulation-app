@@ -1,11 +1,11 @@
 package com.joshguna.mapper;
 
-import com.joshguna.dto.AccountDTO;
 import com.joshguna.dto.TransactionDTO;
-import com.joshguna.entity.Account;
 import com.joshguna.entity.Transaction;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class TransactionMapper {
 
     private final ModelMapper modelMapper;

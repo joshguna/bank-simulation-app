@@ -1,15 +1,13 @@
 package com.joshguna.service.impl;
 
-import com.joshguna.dto.AccountDTO;
 import com.joshguna.entity.Account;
 import com.joshguna.enums.AccountStatus;
-import com.joshguna.enums.AccountType;
+import com.joshguna.dto.AccountDTO;
 import com.joshguna.mapper.AccountMapper;
 import com.joshguna.repository.AccountRepository;
 import com.joshguna.service.AccountService;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,12 +25,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void createNewAccount(AccountDTO accountDTO) {
+
         //we will complete the DTO
         accountDTO.setAccountStatus(AccountStatus.ACTIVE);
         accountDTO.setCreationDate(new Date());
 
         //convert it to entity and save it.
         accountRepository.save(accountMapper.convertToEntity(accountDTO));
+
+
     }
 
     @Override
@@ -74,7 +75,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO retrieveByID(Long id) {
+    public AccountDTO retrieveById(Long id) {
         //find the account entity based on id, then convert it to dto and return it
         return accountMapper.convertToDTO(accountRepository.findById(id).get());
     }
@@ -86,6 +87,12 @@ public class AccountServiceImpl implements AccountService {
         //convert active accounts to accountDto and return
         return accountList.stream().map(accountMapper::convertToDTO).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public void updateAccount(AccountDTO accountDTO) {
+
+        accountRepository.save(accountMapper.convertToEntity(accountDTO));
     }
 
 

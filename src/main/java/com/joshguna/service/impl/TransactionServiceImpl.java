@@ -51,9 +51,11 @@ public class TransactionServiceImpl implements TransactionService {
             executeBalanceAndUpdateIfRequired(amount, sender, receiver);
 
             //after all validation and money transfer, we create TransactionDTO obj and save/return it
-            TransactionDTO transactionDTO = new TransactionDTO();
 
-            return transactionRepository.save(transactionDTO);
+            TransactionDTO transactionDTO = new TransactionDTO(sender, receiver, amount, message, creationDate);
+            transactionRepository.save(transactionMapper.convertToEntity(transactionDTO));
+            return transactionDTO;
+
         } else {
             throw new UnderConstructionException("App is under construction, try later");
         }
@@ -66,6 +68,22 @@ public class TransactionServiceImpl implements TransactionService {
             //update balances
             sender.setBalance(sender.getBalance().subtract(amount));
             receiver.setBalance(receiver.getBalance().add(amount));
+
+             /*
+                get the dto from database for both sender and receiver, update balance and save it.
+                create accountService updateAccount method and use it for save.
+             */
+
+            //find the sender account
+            AccountDTO senderAcc = accountService.retrieveById(sender.getId());
+            senderAcc.setBalance(sender.getBalance());
+            //save again to database
+            accountService.updateAccount(senderAcc);
+            //find the receiver account
+            AccountDTO receiverAcc = accountService.retrieveById(receiver.getId());
+            receiverAcc.setBalance(receiver.getBalance());
+            accountService.updateAccount(receiverAcc);
+
         } else {
             throw new BalanceNotSufficientException("Balance is not enough for this transfer");
         }
@@ -110,8 +128,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
-    private void findAccountById(Long id) {
-        accountRepository.findById(id);
+    private AccountDTO findAccountById(Long id) {
+        return accountService.retrieveById(id);
     }
 
     @Override
