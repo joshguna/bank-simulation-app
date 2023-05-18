@@ -1,6 +1,7 @@
 package com.joshguna.service.impl;
 
 import com.joshguna.dto.AccountDTO;
+import com.joshguna.entity.Transaction;
 import com.joshguna.enums.AccountType;
 import com.joshguna.exception.AccountOwnershipException;
 import com.joshguna.exception.BadRequestException;
@@ -121,11 +122,22 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionDTO> last10Transactions() {
-        return transactionRepository.findLast10Transactions();
+
+        //we want last 10 latest transaction
+        //write a native query to get the result for last 10 transaction
+        List<Transaction> last10Transactions = transactionRepository.findLast10Transactions();
+
+        //then convert it to dto and return it
+        return last10Transactions.stream().map(transactionMapper::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
     public List<TransactionDTO> findTransactionListById(Long id) {
-        return transactionRepository.findTransactionListById(id);
+
+        //write a JPQL query to retrieve list of transactions by id
+        List<Transaction> transactionListById = transactionRepository.findTransactionListById(id);
+
+        //convert it to dto and return it
+        return transactionListById.stream().map(transactionMapper::convertToDTO).collect(Collectors.toList());
     }
 }
